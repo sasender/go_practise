@@ -1,0 +1,12 @@
+what is Go- interfaces, why do we use, what is the importent of interfaces
+Introudction_Interfaces:
+    An interface in Go is a collection of method signatures.
+
+    “Interfaces in Go define behavior. They allow different types to implement the same behavior implicitly, enabling polymorphism, loose coupling, and easier testing.”
+    Interface = WHAT can be done
+    Struct = HOW it is done
+    Interview-friendly >>
+    “Interfaces in Go allow different types to behave the same way, so code depends on behavior instead of concrete types.”
+    “Passing interfaces instead of structs makes functions reusable, extensible, and loosely coupled.”
+
+    
