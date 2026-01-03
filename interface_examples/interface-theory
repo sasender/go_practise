@@ -9,4 +9,7 @@ Introudction_Interfaces:
     “Interfaces in Go allow different types to behave the same way, so code depends on behavior instead of concrete types.”
     “Passing interfaces instead of structs makes functions reusable, extensible, and loosely coupled.”
 
+    Use structs to represent things,
+    use interfaces to represent roles.
+
     
