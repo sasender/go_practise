@@ -1,11 +1,11 @@
-## What is a Go Module?##
+## What is a Go Module?
 A container for your Go project that manages code + dependencies
 
 ## What is go.mod? ##
 
 go.mod is the identity card of your project.
 
-## Why do we need Go Modules?##
+## Why do we need Go Modules? ##
 With modules ✅:
 
 Exact versions are locked
@@ -19,7 +19,7 @@ Works anywhere
 ## When do we use modules?
 If your code imports anything outside standard library, you need modules.
 
-## What is a Package then?##
+## What is a Package then? ##
 
 *** A package is:**
 
