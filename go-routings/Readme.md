@@ -49,3 +49,5 @@ Just like your heart doesn't wait for one chamber to finish before the next star
 ## Goroutines are the mechanism that makes concurrency possible in Go.
 
 No goroutines → no concurrency in Go
+***Why goroutines are lightweight?**
+Goroutines are lightweight because they are managed by the Go runtime instead of the operating system, use very small stacks that grow dynamically, and communicate mainly through channels instead of shared memory locks.
