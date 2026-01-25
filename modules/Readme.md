@@ -36,7 +36,7 @@ A folder that groups related code
 *** All .go files inside the SAME folder must have the SAME package name**
 
 ## refer_links:
-*** https://www.digitalocean.com/community/tutorials/understanding-package-visibility-in-go ***
+>https://www.digitalocean.com/community/tutorials/understanding-package-visibility-in-go
 
 >> https://www.digitalocean.com/community/tutorials/how-to-use-go-modules
 
