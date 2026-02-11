@@ -7,12 +7,27 @@ func multiple(c chan int, someValue int) {
 }
 
 func main() {
+	var num1, num2 int
+
+	// Ask user for input
+	fmt.Print("Enter first value (integer): ")
+	_, err1 := fmt.Scanln(&num1)
+
+	fmt.Print("Enter second value (integer): ")
+	_, err2 := fmt.Scanln(&num2)
+
+	// Handle input errors
+	if err1 != nil || err2 != nil {
+		fmt.Println("Error: Please enter valid integers")
+		return
+	}
+
 	value := make(chan int)
-	go multiple(value, 10)
-	go multiple(value, 5)
+	go multiple(value, num1)
+	go multiple(value, num2)
 
 	v1 := <-value
 	v2 := <-value
 
-	fmt.Println(v1, v2)
+	fmt.Println("Results:", v1, v2)
 }
