@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 // Struct to hold food type and amount
 type FoodItem struct {
@@ -8,43 +11,58 @@ type FoodItem struct {
 	amount   int
 }
 
-func food(c chan FoodItem, foodtype string, foodamount int) {
+func food(c chan FoodItem, foodtype string, foodamount int, wg *sync.WaitGroup) {
 	// Send food type and amount through channel
 	c <- FoodItem{foodType: foodtype, amount: foodamount}
+	wg.Done() // Mark goroutine as done
 }
 
 func main() {
-	var food1, food2 string
-	var amount1, amount2 int
+	var wg sync.WaitGroup
+	var numOrders int
 
-	fmt.Print("Enter the first food type: ")
-	_, err1 := fmt.Scanln(&food1)
+	fmt.Print("How many food orders do you want to place? ")
+	fmt.Scanln(&numOrders)
 
-	fmt.Print("Enter the first food amount: ")
-	_, errA1 := fmt.Scanln(&amount1)
+	foodOrders := make([]FoodItem, numOrders)
 
-	fmt.Print("Enter the second food type: ")
-	_, err2 := fmt.Scanln(&food2)
+	// Get food orders from user
+	for i := 0; i < numOrders; i++ {
+		var foodType string
+		var amount int
 
-	fmt.Print("Enter the second food amount: ")
-	_, errA2 := fmt.Scanln(&amount2)
+		fmt.Printf("Order %d - Enter food type: ", i+1)
+		fmt.Scanln(&foodType)
 
-	if err1 != nil || err2 != nil || errA1 != nil || errA2 != nil {
-		fmt.Println("Error: Please enter valid inputs")
-		return
+		fmt.Printf("Order %d - Enter amount: ", i+1)
+		fmt.Scanln(&amount)
+
+		foodOrders[i] = FoodItem{foodType: foodType, amount: amount}
 	}
 
-	value := make(chan FoodItem, 2)
-	go food(value, food1, amount1)
-	go food(value, food2, amount2)
+	// Create channel with buffer size equal to number of orders
+	value := make(chan FoodItem, numOrders)
 
-	v1 := <-value
-	v2 := <-value
+	// Add all goroutines to wait group
+	wg.Add(numOrders)
 
-	totalAmount := v1.amount + v2.amount
+	// Launch concurrent food requests
+	for i := 0; i < numOrders; i++ {
+		go food(value, foodOrders[i].foodType, foodOrders[i].amount, &wg)
+	}
 
-	fmt.Println("\nResults:")
-	fmt.Println("Food 1:", v1.foodType, "Amount:", v1.amount)
-	fmt.Println("Food 2:", v2.foodType, "Amount:", v2.amount)
-	fmt.Println("Total amount of food:", totalAmount)
+	// Wait for all goroutines to complete
+	wg.Wait()
+
+	// Collect results
+	var totalAmount int
+	fmt.Println("\n--- Food Orders Results ---")
+	for i := 0; i < numOrders; i++ {
+		result := <-value
+		totalAmount += result.amount
+		fmt.Printf("Order %d: %s - Amount: %d\n", i+1, result.foodType, result.amount)
+	}
+
+	close(value)
+	fmt.Printf("\nTotal amount of all food: %d\n", totalAmount)
 }
