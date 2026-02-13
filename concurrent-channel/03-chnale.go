@@ -8,63 +8,43 @@ type FoodItem struct {
 	amount   int
 }
 
-// Map to store food types with their amounts
-var foodInventory = map[string]int{
-	"pizza":   5,
-	"burger":  10,
-	"pasta":   8,
-	"salad":   15,
-	"drink":   20,
-	"beer":    180,
-	"biryani": 135,
-	"idli":    50,
-	"poori":   30,
-	"dosha":   25,
-}
-
-func food(c chan FoodItem, foodtype string) {
-	// Check if food type exists in map
-	if amount, exists := foodInventory[foodtype]; exists {
-		c <- FoodItem{foodType: foodtype, amount: amount}
-	} else {
-		c <- FoodItem{foodType: foodtype, amount: 0}
-	}
+func food(c chan FoodItem, foodtype string, foodamount int) {
+	// Send food type and amount through channel
+	c <- FoodItem{foodType: foodtype, amount: foodamount}
 }
 
 func main() {
-	var food1, food2, food3, food4 string
-	fmt.Println("Available foods:", foodInventory)
+	var food1, food2 string
+	var amount1, amount2 int
 
 	fmt.Print("Enter the first food type: ")
 	_, err1 := fmt.Scanln(&food1)
 
+	fmt.Print("Enter the first food amount: ")
+	_, errA1 := fmt.Scanln(&amount1)
+
 	fmt.Print("Enter the second food type: ")
 	_, err2 := fmt.Scanln(&food2)
 
-	fmt.Print("Enter the third food type: ")
-	_, err3 := fmt.Scanln(&food3)
+	fmt.Print("Enter the second food amount: ")
+	_, errA2 := fmt.Scanln(&amount2)
 
-	fmt.Print("Enter the fourth food type: ")
-	_, err4 := fmt.Scanln(&food4)
-
-	if err1 != nil || err2 != nil || err3 != nil || err4 != nil {
-		fmt.Println("Error: Please enter valid strings")
+	if err1 != nil || err2 != nil || errA1 != nil || errA2 != nil {
+		fmt.Println("Error: Please enter valid inputs")
 		return
 	}
 
-	value := make(chan FoodItem, 4)
-	go food(value, food1)
-	go food(value, food2)
-	go food(value, food3)
-	go food(value, food4)
+	value := make(chan FoodItem, 2)
+	go food(value, food1, amount1)
+	go food(value, food2, amount2)
 
 	v1 := <-value
 	v2 := <-value
-	v3 := <-value
-	v4 := <-value
 
-	totalAmount := v1.amount + v2.amount + v3.amount + v4.amount
+	totalAmount := v1.amount + v2.amount
 
-	fmt.Println("Results:", v1.foodType, v1.amount, "and", v2.foodType, v2.amount, "and", v3.foodType, v3.amount, "and", v4.foodType, v4.amount)
+	fmt.Println("\nResults:")
+	fmt.Println("Food 1:", v1.foodType, "Amount:", v1.amount)
+	fmt.Println("Food 2:", v2.foodType, "Amount:", v2.amount)
 	fmt.Println("Total amount of food:", totalAmount)
 }
