@@ -16,7 +16,7 @@ type Response struct {
 func main() {
 
 	// API routes - specific routes first
-	http.HandleFunc("/sasender", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		response := Response{
 			Message: "Hello world from GfG",
@@ -24,7 +24,7 @@ func main() {
 		}
 		json.NewEncoder(w).Encode(response)
 	})
-	http.HandleFunc("/reddy", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/hi", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		response := Response{
 			Message: "Hi",
