@@ -17,3 +17,12 @@ So Go says:
 "You must make both types SAME before adding"
 
 Always convert smaller type → bigger type
+
+***
+ Common format verbs in Go's fmt package:
+%d: Integer (decimal)
+%f: Floating-point number
+%s: String
+%t: Boolean (true/false)
+%v: Default format for any value (useful for debugging)
+***
